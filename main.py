@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from app.controllers.StocksController import stocks_router
+from app.controllers.UserController import user_router
 from database import init_db
 
 
@@ -30,3 +31,4 @@ async def index():
     return {"message": "Api is running"}
 
 app.include_router(stocks_router, prefix="/api/v1")
+app.include_router(user_router, prefix="/api/v1")

@@ -18,8 +18,8 @@ engine = create_async_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True)
 
 
 async def init_db():
-    from app.models.StockModel import StockModel
-    from app.models.StockDataModel import StockDataModel
+    # from app.models.StockModel import StockModel
+    # from app.models.StockDataModel import StockDataModel
 
     async with engine.begin() as conn:
         # await conn.run_sync(SQLModel.metadata.drop_all)

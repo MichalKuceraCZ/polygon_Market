@@ -1,7 +1,8 @@
+from datetime import datetime
+
+from polygon.rest.models import Ticker, Agg
 from sqlmodel import select
 
-from app.data.StockAggregatesData import StockAggregatesData
-from app.data.StocksData import StocksData
 from app.models.StockDataModel import StockDataModel
 from app.models.StockModel import StockModel
 
@@ -11,7 +12,7 @@ class StocksService:
     def __init__(self, context):
         self.session = context["session"]
 
-    async def create(self, data: list[StocksData]) -> None:
+    async def create(self, data: list[Ticker]) -> None:
         new_stocks = []
 
         for stock in data:
@@ -44,16 +45,30 @@ class StocksService:
         result = await self.session.execute(query)
         return result.scalars().one()
 
-    async def create_data(self, data: list[StockAggregatesData]) -> None:
+    async def getByTicker(self, ticker: str) -> StockModel:
+        query = (
+            select(StockModel)
+            .where(StockModel.ticker == ticker)
+        )
+
+        result = await self.session.execute(query)
+        return result.scalars().one()
+
+    async def create_data(self, data: list[Agg], ticker: str) -> None:
         new_data = []
 
+        stock = await self.getByTicker(ticker)
+
         for item in data:
+            print(item.timestamp)
+
             new_stock_data_model = StockDataModel(
-                low=item["l"],
-                high=item["h"],
-                open=item["o"],
-                close=item["c"],
-                time=item["t"],
+                stock_id=stock.stock_id,
+                low=item.low,
+                high=item.high,
+                open=item.open,
+                close=item.close,
+                time=item.timestamp,
             )
 
             new_data.append(new_stock_data_model)

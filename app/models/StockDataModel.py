@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import sqlalchemy as sa
 
 from sqlmodel import SQLModel, Field
@@ -15,7 +13,8 @@ class StockDataModel(SQLModel, table=True):
     high: int = Field(nullable=False)
     close: int = Field(nullable=False)
     open: int = Field(nullable=False)
-    time: datetime = Field(nullable=False)
+    time: int = Field(sa_column=sa.Column(sa.Numeric, nullable=False))
 
-    stock_id: int = Field(sa_column=sa.Column(sa.ForeignKey(StockModel.stock_id,
-                                                            ondelete="CASCADE", onupdate="CASCADE")))
+    stock_id: int = Field(sa_column=sa.Column(sa.ForeignKey(StockModel.stock_id, ondelete="CASCADE", onupdate="CASCADE")))
+
+
