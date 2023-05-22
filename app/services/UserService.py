@@ -59,4 +59,3 @@ class UserService:
             raise UserNotFoundException("Username or password is invalid")
 
         return user
-
